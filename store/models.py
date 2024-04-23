@@ -7,7 +7,7 @@ class Category(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name
+        return f"{str(self.name)}"
     
     class Meta:
         verbose_name_plural = 'categories'
@@ -38,7 +38,7 @@ class Product(models.Model):
     on_sale = models.BooleanField(default=False)
     sale_price = models.DecimalField(default=0, decimal_places=2, max_digits=6)
     def __str__(self):
-        return self.name
+        return f"{str(self.name)}"
 
 
 
@@ -53,5 +53,5 @@ class Order(models.Model):
     status = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.product
+        return f"{str(self.product)}"
     
