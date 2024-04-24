@@ -1,10 +1,16 @@
 from django.shortcuts import render, redirect
+
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.hashers import check_password
+
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
 
 from django.contrib import messages
 
 from .models import Product
+from .forms import SignUpForm
 
 
 # Create your views here.
@@ -61,11 +67,41 @@ def login_user(request):
         return render(request, 'login.html', {})
 
 
-
-
-
-
 def logout_user(request):
     logout(request)
     messages.success(request, ("You're logged out. Stop on by again now, ya hear!"))
     return redirect('home')
+
+
+def register_user(request):
+    form = SignUpForm()
+
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            print(form.cleaned_data)
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            print(username, password)
+
+            # Log in User automatically after signup
+            user = authenticate(username=username, password=password)
+
+            if user is not None: 
+
+                if user.is_active:
+                    login(request, user)
+                    messages.success(request, ('You are now logged in. Welcome! 🥳'))
+                    return redirect('home')
+                
+                else:
+                    messages.warning(request, ('Your account is inactive. Please contact support. 🤖'))
+                    return redirect('login')
+                
+            else:
+                    messages.warning(request, ('Invalid username or password. Please try again. 🤖'))
+
+    return render(request, 'register.html', {"form": form})
+
