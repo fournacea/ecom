@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 from . import views
 
 
@@ -9,4 +10,6 @@ urlpatterns = [
     path('logout/', views.logout_user, name='logout'),
     path('register/', views.register_user, name='register'),
     path('product/<int:pk>', views.product, name='product'),
+    path('category/<str:cat>', views.category, name='category'),
+    path('favicon.ico', RedirectView.as_view(url='/static/assets/favicon.ico')),
 ]

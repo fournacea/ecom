@@ -6,12 +6,10 @@ from django.contrib.auth import (
     get_user_model
 )
 from django.contrib.auth.hashers import check_password
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib import messages
 
-from .models import Product
+from .models import Product, Category
 from .forms import SignUpForm
 
 
@@ -24,6 +22,27 @@ def home(request):
 def about(request):
     """Render about page."""
     return render(request, 'about.html', {})
+
+def category(request, cat):
+    """Refine items to a category"""
+    print(f"cat coming in raw: {cat}")
+    # Replace hyphens with spaces
+    cat = cat.replace('-', ' ').title()
+    print(f"cat after .replace: {cat}")
+
+    # Get the category from the URL
+    try:
+        #Look up category in database
+        category =  Category.objects.get(name=cat)
+        print(f"category after db lookup: {category}")
+        products =  Product.objects.filter(category=category)
+        print(category, products)
+        return render(request, 'category.html', {"category": category,"products":products})
+    except:
+       messages.error(request, ("That category doesn't exist")) 
+       return redirect('home')
+
+
 
 
 def login_user(request):
