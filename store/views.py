@@ -25,7 +25,6 @@ def about(request):
 
 def category(request, cat):
     """Refine items to a category"""
-    print(f"cat coming in raw: {cat}")
     # Replace hyphens with spaces
     cat = cat.replace('-', ' ').title()
     print(f"cat after .replace: {cat}")
@@ -34,9 +33,7 @@ def category(request, cat):
     try:
         #Look up category in database
         category =  Category.objects.get(name=cat)
-        print(f"category after db lookup: {category}")
         products =  Product.objects.filter(category=category)
-        print(category, products)
         return render(request, 'category.html', {"category": category,"products":products})
     except:
        messages.error(request, ("That category doesn't exist")) 
