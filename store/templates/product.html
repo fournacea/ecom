@@ -48,14 +48,22 @@
 									</strike>
 									&nbsp;
 									${{ product.sale_price }}
+									<br>ID: {{ product.id }}
 					
 					
 					
 							{% else %}
-								${{ product.price }}							
+								${{ product.price }}	
+														
 							{% endif %} 
 							<br><br>
                             <a class="btn btn-outline-dark mt-auto" href="{% url 'home' %}">Home</a>
+							<button 
+								type="button" 
+								class="btn btn-success"
+								value="{{ product.id }}"
+								id="add-cart"
+							>Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -64,4 +72,39 @@
     </center>
 
   	<br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<!-- JS for cart functionality -->
+	<script>
+		// Check if button pressed
+		$(document).on('click', '#add-cart', function(e){
+			e.preventDefault();
+			$.ajax({
+				type: 'POST',
+				url: '{% url 'cart-add' %}',
+				data: {
+					product_id: $('#add-cart').val(),
+					csrfmiddlewaretoken: '{{ csrf_token }}',
+					action: 'post'
+				},
+		
+				success: function(json){
+					//console.log(json)
+					{% comment %} document.getElementById("cart_quantity").textContent = json.qty
+					location.reload(); {% endcomment %}
+				},
+		
+				error: function(xhr, errmsg, err){
+		
+				}
+		
+		
+			});
+		
+		
+		
+		})
+		
+		</script>
+	{% comment %} <script id="dynamic-data" data-cart-add-url="{% url 'cart-add' %}"></script>
+	<script id="dynamic-data1" data-cart-add-url="{% url 'cart-add' %}"></script>
+	<script src="{% static 'js/cart.js' %}"></script> {% endcomment %}
 {% endblock %}

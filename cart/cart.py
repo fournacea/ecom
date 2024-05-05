@@ -12,3 +12,14 @@ class Cart():
 
         # Make cart available on all pages of site
         self.cart = cart
+
+
+    def add(self, product):
+        product_id = str(product)
+
+        if product_id in self.cart:
+            pass
+        else:
+            self.cart = {'price': str(product.price)}
+
+        self.session.modified = True
