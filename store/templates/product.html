@@ -57,13 +57,19 @@
 														
 							{% endif %} 
 							<br><br>
-                            <a class="btn btn-outline-dark mt-auto" href="{% url 'home' %}">Home</a>
+                            <a class="btn btn-outline-dark mt-auto me-1" href="{% url 'home' %}">Home</a>
+							{% with category_url=product.category %}
+								<a class="btn btn-outline-dark mt-auto me-5" href="{% url 'about'|lower %}">{{ product.category }}</a>
+							{% endwith %}
+						
 							<button 
 								type="button" 
 								class="btn btn-success"
 								value="{{ product.id }}"
 								id="add-cart"
 							>Add to Cart</button>
+							
+							
                         </div>
                     </div>
                 </div>
@@ -79,7 +85,7 @@
 			e.preventDefault();
 			$.ajax({
 				type: 'POST',
-				url: '{% url 'cart-add' %}',
+				url: "{% url 'cart-add' %}",
 				data: {
 					product_id: $('#add-cart').val(),
 					csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -87,13 +93,13 @@
 				},
 		
 				success: function(json){
-					//console.log(json)
-					{% comment %} document.getElementById("cart_quantity").textContent = json.qty
-					location.reload(); {% endcomment %}
+					console.log(json)
+					document.getElementById("cart-quantity").textContent = json.qty
+					{% comment %} location.reload();  {% endcomment %}
 				},
 		
 				error: function(xhr, errmsg, err){
-		
+					console.log(errmsg, err)
 				}
 		
 		
