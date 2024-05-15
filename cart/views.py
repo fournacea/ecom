@@ -6,30 +6,49 @@ from django.contrib import messages
 
 def cart_summary(request):
     """Render cart summary."""
-    return render(request, 'cart_summary.html', {})
+    cart = Cart(request)
+    cart_products = cart.get_products
+    return render(request, 'cart_summary.html', {"cart_products":cart_products})
 
 
 # def cart_add(request):
-#     """Add items to cart."""
-#     print(request)
+#     # Get the cart
 #     cart = Cart(request)
+    
+#     # Initialize flag for product already added
+#     product_already_added = False
+    
+#     # Test for POST
 #     if request.POST.get('action') == 'post':
-#         # Retrieve the product_id from the URI(Request made by AJAX) 
+#         # Get product ID from POST data
 #         product_id = int(request.POST.get('product_id'))
-
-#         # Get the product from the database using the product ID #
+        
+#         # Lookup product in DB
 #         product = get_object_or_404(Product, id=product_id)
-
-#         # Save to session
-#         cart.add(product=product)
-
-#         #Get cart quantity
-#         cart_quantity = cart.__len__()
-#         print(cart_quantity)
-
-#         # Return response
-#         response = JsonResponse({"Product Name: ":product.name, "qty":cart_quantity})
-#         return response
+        
+#         # Check if product is already in cart
+#         if product in cart:
+#             product_already_added = True
+#             # Store the message in the session
+#             request.session['product_already_added'] = True
+#         else:
+#             # Save product to session
+#             cart.add(product=product)
+#             # Store the success message in the session
+#             request.session['product_added'] = True
+    
+#     # Get cart quantity
+#     cart_quantity = len(cart)
+    
+#     # Prepare response data
+#     response_data = {'qty': cart_quantity}
+    
+#     # If product was already added, include the message
+#     if product_already_added:
+#         response_data['message'] = 'Product already added'
+    
+#     # Return response
+#     return JsonResponse(response_data)
     
 
 def cart_add(request):
@@ -45,9 +64,17 @@ def cart_add(request):
         # lookup product in DB
         product = get_object_or_404(Product, id=product_id)
         print(f"product:{product}")
+
+        # Check if product is already in cart
+        if product in cart:
+            # Add a message
+            messages.warning(request, 'Product already added')
+        else:
+            # Save product to session
+            cart.add(product=product)
+            # Add a success message
+            messages.success(request, 'Product added to cart successfully!')
         
-        # Save to session
-        cart.add(product=product)
 
         # Get Cart Quantity
         cart_quantity = cart.__len__()
@@ -71,3 +98,4 @@ def cart_delete(request):
 def cart_update(request):
     """Update items in cart."""
     pass
+

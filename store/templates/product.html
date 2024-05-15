@@ -28,7 +28,7 @@
         <div class="container mt-3">
             <div class="card mb-3">
                 <div class="row g-0">
-                    <div class="col-md-4 d-flex align-items-center">
+                    <div class="col-md-4">
                         <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="..." />
                     </div>
                     <div class="col-md-8">
@@ -36,27 +36,36 @@
                             <h5 class="card-title">{{ product.name }}</h5>
                             <p class="card-text mt-3">{{ product.description }}</p>
 							{% if product.on_sale %}
-								<div class="d-flex justify-content-center large text-warning mb-2">
-									<div class="bi-star-fill"></div>
-									&nbsp;&nbsp;Sale!&nbsp;&nbsp;
-									<div class="bi-star-fill"></div>
-									</div>
-					
-									<!-- Product price-->
+							<div class="d-flex justify-content-center large text-warning mb-2">
+								<div class="bi-star-fill"></div>
+								&nbsp;&nbsp;Sale!&nbsp;&nbsp;
+								<div class="bi-star-fill"></div>
+								</div>
+				
+								<!-- Product price-->
+								<span class="d-flex justify-content-center">								
 									<strike>
 									${{ product.price }}
 									</strike>
-									&nbsp;
-									${{ product.sale_price }}
-									<br>ID: {{ product.id }}
-					
-					
-					
-							{% else %}
-								${{ product.price }}	
-														
-							{% endif %} 
+								</span>
+								<span class="d-flex justify-content-center">								
+									<em>${{ product.sale_price }}</em>
+									
+									
+								</span>
+								<br>	
+				
+						{% else %}
+							<span class="d-flex justify-content-center">								
+								<em>${{ product.price }}</em>
+								
+								
+							</span>
+							<br><br>	
+													
+						{% endif %}  
 							<br><br>
+							<br>
                             <a class="btn btn-outline-dark mt-auto me-1" href="{% url 'home' %}">Home</a>
 							{% with category_url=product.category %}
 								<a class="btn btn-outline-dark mt-auto me-5" href="{% url 'about'|lower %}">{{ product.category }}</a>

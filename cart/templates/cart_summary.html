@@ -6,17 +6,101 @@
 <header class="bg-dark py-5">
 	<div class="container px-4 px-lg-5 my-5">
 		<div class="text-center text-white">
-			<h1 class="display-4 fw-bolder">Shopping Basket</h1>
+			<h1 class="display-4 fw-bolder">Shopping Buggy</h1>
 			<p class="lead fw-normal text-white-50 mb-0">
-				View your basket...<span>🧺</span>
+				View your cart <span>🧺</span>
 			</p>
 		</div>
 	</div>
 </header>
 <!-- Section-->
 <section class="py-5">
-	<h1>SHOPPING 🧺 </h1>
+	{% if cart_products %}
+		{% for product in cart_products %}
+		<div class="container mt-3">
+			<div class="card mb-3">
+				<div class="row g-0">
+					<div class="col-md-4 d-flex align-items-center">
+						<img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="..." />
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title d-flex justify-content-center">{{ product.name }}</h5>
+							<p class="card-text mt-3 d-flex justify-content-center">{{ product.description }}</p>
+							{% if product.on_sale %}
+								<div class="d-flex justify-content-center large text-warning mb-2">
+									<div class="bi-star-fill"></div>
+									&nbsp;&nbsp;Sale!&nbsp;&nbsp;
+									<div class="bi-star-fill"></div>
+									</div>
+					
+									<!-- Product price-->
+									<span class="d-flex justify-content-center">								
+										<strike>
+										${{ product.price }}
+										</strike>
+									</span>
+									<span class="d-flex justify-content-center">								
+										<em>${{ product.sale_price }}</em>
+										
+										
+									</span>
+									<br>	
+					
+							{% else %}
+								<span class="d-flex justify-content-center">								
+									<em>${{ product.price }}</em>
+									
+									
+								</span>
+								<br><br>	
+														
+							{% endif %} 
+							<a class="btn btn-outline-dark mt-auto me-1" href="{% url 'home' %}">Home</a>
+							{% with category_url=product.category %}
+								<a class="btn btn-outline-dark mt-auto me-5" href="{% url 'about'|lower %}">{{ product.category }}</a>
+							{% endwith %}
+							
+							<button 
+							type="button" 
+							class="btn btn-outline-primary"
+							>Update</button>
+
+							<button 
+							type="button" 
+							class="btn btn-outline-danger"
+							>Remove</button>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	{% else %}
+	<div>
+		<p>There's nothing in your cart yet...</p>
+	</div>
+	{% endif %}
 </section>
 
 <br><br><br><br><br><br>
+
+<script>
+	$(document).ready(function() {
+		// Check if product already added message is present
+		if ("{{ request.session.product_already_added }}" == "True") {
+			alert("Product already added");
+			// Remove the message from the session
+			delete "{{ request.session.product_already_added }}";
+		}
+		
+		// Check if product added message is present
+		if ("{{ request.session.product_added }}" == "True") {
+			alert("Product added to cart successfully!");
+			// Remove the message from the session
+			delete "{{ request.session.product_added }}";
+		}
+	});
+	</script>
 {% endblock content %}
