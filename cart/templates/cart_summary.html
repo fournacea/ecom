@@ -53,22 +53,45 @@
 									
 									
 								</span>
-								<br><br>	
-														
+								<br><br>															
 							{% endif %} 
+
+							<div class="row justify-content-center">
+								<div class="col-md-2">Quantity: </div>
+									<div class="col-md-2">
+										
+										<select id="cart-qty" class="form-select">
+											{% for pid, qty in quantities.items %}
+												
+ 											{% if pid == product.id|slugify %}
+													<option selected value="{{qty}}">{{qty}}</option>
+												{% endif %}
+											{% endfor %}
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+										</select>
+									
+								</div>
+							</div>
+							<br>
 							<a class="btn btn-outline-dark mt-auto me-1" href="{% url 'home' %}">Home</a>
 							{% with category_url=product.category %}
-								<a class="btn btn-outline-dark mt-auto me-5" href="{% url 'about'|lower %}">{{ product.category }}</a>
+								<a class="btn btn-outline-dark mt-auto me-5" href="{% url 'about' %}">{{ product.category }}</a>
 							{% endwith %}
 							
 							<button 
-							type="button" 
-							class="btn btn-outline-primary"
+							type="button"
+							data-index="{{product.id}}" 
+							class="btn btn-secondary update-cart"
 							>Update</button>
 
 							<button 
 							type="button" 
-							class="btn btn-outline-danger"
+							class="btn btn-secondary"
 							>Remove</button>
 							
 						</div>
@@ -86,21 +109,5 @@
 
 <br><br><br><br><br><br>
 
-<script>
-	$(document).ready(function() {
-		// Check if product already added message is present
-		if ("{{ request.session.product_already_added }}" == "True") {
-			alert("Product already added");
-			// Remove the message from the session
-			delete "{{ request.session.product_already_added }}";
-		}
-		
-		// Check if product added message is present
-		if ("{{ request.session.product_added }}" == "True") {
-			alert("Product added to cart successfully!");
-			// Remove the message from the session
-			delete "{{ request.session.product_added }}";
-		}
-	});
-	</script>
+
 {% endblock content %}

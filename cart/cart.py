@@ -2,19 +2,35 @@ from store.models import Product
 
 
 class Cart:
+    # def __init__(self, request):
+        # self.session = request.session
+
+        # # Get current cart from session or create a new one if not exists
+        # self.cart = self.session.get('cart', {})
+
     def __init__(self, request):
         self.session = request.session
+        # Get request
+        self.request = request
+        # Get the current session key if it exists
+        cart = self.session.get('session_key')
 
-        # Get current cart from session or create a new one if not exists
-        self.cart = self.session.get('cart', {})
+        # If the user is new, no session key!  Create one!
+        if 'session_key' not in request.session:
+            cart = self.session['session_key'] = {}
 
-    def add(self, product):
+
+	    # Make sure cart is available on all pages of site
+        self.cart = cart
+
+    def add(self, product, quantity):
         product_id = str(product.id)
+        product_qty = str(quantity)
 
         if product_id in self.cart:
             print("Product already in cart")
         else:
-            self.cart[product_id] = {'price': str(product.price)}
+            self.cart[product_id] = int(product_qty)
             print("Product added to cart")
 
         self.session['cart'] = self.cart
@@ -28,9 +44,18 @@ class Cart:
     def get_products(self):
         # Get keys from cart
         product_ids = self.cart.keys()
+        print(f"Product IDs: {product_ids}, {self.cart.items()}")
         # Use ids to lookup products in database model, store in list
         products = Product.objects.filter(id__in=product_ids)
+        print(f"Products: {products}", "FROM get_products cart.py")
         return products
+    
+
+    def get_quantities(self):
+        # Get quantities from cart
+        quantities = self.cart
+        print(f"From get_quantities: {quantities}")
+        return quantities
         
         
 
@@ -44,6 +69,10 @@ class Cart:
         products = Product.objects.filter(id__in=product_ids)
         for product in products:
             yield product
+            
+    
+    def update():
+        pass
     
 
     

@@ -7,8 +7,13 @@ from django.contrib import messages
 def cart_summary(request):
     """Render cart summary."""
     cart = Cart(request)
-    cart_products = cart.get_products
-    return render(request, 'cart_summary.html', {"cart_products":cart_products})
+    # print(cart.get_quantities())
+    context = {
+        "cart_products":  cart.get_products(),
+        "quantities":  cart.get_quantities(),
+    }
+    print(f"qty from views.py: {context['quantities']}")
+    return render(request, 'cart_summary.html', context)
 
 
 # def cart_add(request):
@@ -59,6 +64,7 @@ def cart_add(request):
         print(f"request.POST.get: {request.POST.get}")
         # Get stuff
         product_id = int(request.POST.get('product_id'))
+        product_qty = int(request.POST.get('product_qty'))
         
 
         # lookup product in DB
@@ -71,7 +77,7 @@ def cart_add(request):
             messages.warning(request, 'Product already added')
         else:
             # Save product to session
-            cart.add(product=product)
+            cart.add(product=product, quantity=product_qty)
             # Add a success message
             messages.success(request, 'Product added to cart successfully!')
         

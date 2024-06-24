@@ -65,6 +65,28 @@
 													
 						{% endif %}  
 							<br><br>
+							<div class="row justify-content-center">
+								<div class="col-md-2">Quantity: </div>
+									<div class="col-md-2">
+										<select id="cart-qty" class="form-select">
+											{% for pid, qty in quantities.items %}
+												{{pid}} , {{qty}}
+ 											{% if pid == product.id|slugify %}
+													<option selected value="{{qty}}">{{qty}}</option>
+												{% endif %}
+											{% endfor %}
+										
+
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+										</select>
+									
+								</div>
+							</div>
 							<br>
                             <a class="btn btn-outline-dark mt-auto me-1" href="{% url 'home' %}">Home</a>
 							{% with category_url=product.category %}
@@ -97,14 +119,15 @@
 				url: "{% url 'cart-add' %}",
 				data: {
 					product_id: $('#add-cart').val(),
+					product_qty: $('#cart-qty option:selected').text(),
 					csrfmiddlewaretoken: '{{ csrf_token }}',
-					action: 'post'
+					action: 'post',
 				},
 		
 				success: function(json){
 					console.log(json)
 					document.getElementById("cart-quantity").textContent = json.qty
-					{% comment %} location.reload();  {% endcomment %}
+					location.reload();  
 				},
 		
 				error: function(xhr, errmsg, err){
