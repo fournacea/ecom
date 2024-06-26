@@ -71,8 +71,23 @@ class Cart:
             yield product
             
     
-    def update():
-        pass
+    def update(self, product, quantity):
+        product_id = str(product)
+        product_qty = int(quantity)
+        
+        # Get cart
+        current_cart = self.cart
+        
+        # Update cart
+        current_cart[product_id] = product_qty
+        
+        # Set session modified to True
+        self.session.modified = True
+        
+        return self.cart
+        
+        
+        
     
 
     

@@ -60,7 +60,7 @@
 								<div class="col-md-2">Quantity: </div>
 									<div class="col-md-2">
 										
-										<select id="cart-qty" class="form-select">
+										<select id="select{{ product.id }}" class="form-select form-select-sm">
 											{% for pid, qty in quantities.items %}
 												
  											{% if pid == product.id|slugify %}
@@ -108,6 +108,41 @@
 </section>
 
 <br><br><br><br><br><br>
+
+<script>
+	// Check if button pressed
+	$(document).on('click', '.update-cart', function(e){
+		e.preventDefault();
+		//  Get product id
+		const productID = $(this).data('index');
+		$.ajax({
+			type: 'POST',
+			url: "{% url 'cart-update' %}",
+			data: {
+				product_id: productID,
+				product_qty: document.getElementById("select" + productID).value,
+				csrfmiddlewaretoken: '{{ csrf_token }}',
+				action: 'post',
+			},
+	
+			success: function(json){
+				console.log(json)				
+				document.getElementById("cart-quantity").textContent = json.qty;
+				location.reload();  
+			},
+	
+			error: function(xhr, errmsg, err){
+				console.log(errmsg, err);
+			}
+	
+	
+		});
+	
+	
+	
+	})
+	
+	</script>
 
 
 {% endblock content %}

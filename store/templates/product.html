@@ -68,7 +68,7 @@
 							<div class="row justify-content-center">
 								<div class="col-md-2">Quantity: </div>
 									<div class="col-md-2">
-										<select id="cart-qty" class="form-select">
+										<select id="cart-qty" class="form-select form-select-sm">
 											{% for pid, qty in quantities.items %}
 												{{pid}} , {{qty}}
  											{% if pid == product.id|slugify %}
@@ -90,7 +90,7 @@
 							<br>
                             <a class="btn btn-outline-dark mt-auto me-1" href="{% url 'home' %}">Home</a>
 							{% with category_url=product.category %}
-								<a class="btn btn-outline-dark mt-auto me-5" href="{% url 'about'|lower %}">{{ product.category }}</a>
+								<a class="btn btn-outline-dark mt-auto me-5" href="{% url 'about' %}">{{ product.category }}</a>
 							{% endwith %}
 						
 							<button 
