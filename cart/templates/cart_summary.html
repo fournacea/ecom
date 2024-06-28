@@ -89,7 +89,8 @@
 								</div>
 								<div class="col-md-2">
 									<button 
-									type="button" 
+									type="button"
+									data-index="{{product.id}}" 
 									class="btn btn-danger delete-product"
 									>Remove</button>
 									
@@ -115,7 +116,7 @@
 <br><br><br><br><br><br>
 
 <script>
-	// Check if button pressed
+	// Update button
 	$(document).on('click', '.update-cart', function(e){
 		e.preventDefault();
 		//  Get product id
@@ -146,6 +147,37 @@
 	
 	
 	})
+
+
+		// Delete button
+		$(document).on('click', '.delete-product', function(e){
+			e.preventDefault();
+			//  Get product id
+			const productID = $(this).data('index');
+			$.ajax({
+				type: 'POST',
+				url: "{% url 'cart-delete' %}",
+				data: {
+					product_id: productID,
+					csrfmiddlewaretoken: '{{ csrf_token }}',
+					action: 'post',
+				},
+		
+				success: function(json){
+					console.log(json)				
+					location.reload();  
+				},
+		
+				error: function(xhr, errmsg, err){
+					console.log(errmsg, err);
+				}
+		
+		
+			});
+		
+		
+		
+		})
 	
 	</script>
 
