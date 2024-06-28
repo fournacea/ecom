@@ -11,8 +11,9 @@ def cart_summary(request):
     context = {
         "cart_products":  cart.get_products(),
         "quantities":  cart.get_quantities(),
+        "total":  cart.get_total(),
     }
-    print(f"qty from views.py: {context['quantities']}")
+    print(f"qty from views.py: {context['quantities']} Total: ${context['total']}")
     return render(request, 'cart_summary.html', context)
 
 

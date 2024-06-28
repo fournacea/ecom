@@ -88,14 +88,12 @@ class Cart:
     
     
     def delete(self, product):
+        # Get cart
         product_id = str(product)
         
-        # Get cart
+        # Delete cart
         if product_id in self.cart:
             del self.cart[product_id]
-        
-        # Delete cart
-        
         
         # Set session modified to True
         self.session.modified = True
@@ -103,7 +101,28 @@ class Cart:
         return True
         
         
+    def get_total(self):
+        # Get product IDs from cart
+        product_ids = self.cart.keys()
         
+        # Get products from database
+        products = Product.objects.filter(id__in=product_ids)
+        quantities = self.cart
+        
+        total = 0
+        for id, qty in quantities.items():
+            id = int(id)
+            
+            for product in products:
+                if id == product.id:
+                    if product.sale_price:
+                        total = total + (product.sale_price * qty)
+                    else:
+                        total = total + (product.price * qty)
+                    
+        return total
+            
+            
     
 
     
