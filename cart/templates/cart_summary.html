@@ -78,21 +78,26 @@
 								</div>
 							</div>
 							<br>
-							<a class="btn btn-outline-dark mt-auto me-1" href="{% url 'home' %}">Home</a>
-							{% with category_url=product.category %}
-								<a class="btn btn-outline-dark mt-auto me-5" href="{% url 'about' %}">{{ product.category }}</a>
-							{% endwith %}
 							
-							<button 
-							type="button"
-							data-index="{{product.id}}" 
-							class="btn btn-secondary update-cart"
-							>Update</button>
+							<div class="row justify-content-center">
+								<div class="col-md-2"> 
+									<button 
+									type="button"
+									data-index="{{product.id}}" 
+									class="btn btn-secondary mb-2 update-cart"
+									>Update</button>
+								</div>
+								<div class="col-md-2">
+									<button 
+									type="button" 
+									class="btn btn-danger delete-product"
+									>Remove</button>
+									
+								</div>
+							</div>
 
-							<button 
-							type="button" 
-							class="btn btn-secondary"
-							>Remove</button>
+
+
 							
 						</div>
 					</div>
