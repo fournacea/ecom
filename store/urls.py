@@ -11,5 +11,6 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     path('product/<int:pk>', views.product, name='product'),
     path('category/<str:cat>', views.category, name='category'),
+    path('category-summary/', views.category_summary, name='category-summary'),
     path('favicon.ico', RedirectView.as_view(url='/static/assets/favicon.ico')),
 ]

@@ -32,12 +32,19 @@ def category(request, cat):
     # Get the category from the URL
     try:
         #Look up category in database
-        category =  Category.objects.get(name=cat)
+        category =  Category.objects.get(name=cat)# Name collison possible - change soon
         products =  Product.objects.filter(category=category)
         return render(request, 'category.html', {"category": category,"products":products})
     except:
        messages.error(request, ("That category doesn't exist")) 
        return redirect('home')
+   
+   
+def category_summary(request):
+    """Display a list of all Categories"""
+    categories = Category.objects.all()
+    context = {"categories":categories}
+    return render(request, 'category-summary.html', context)
 
 
 
