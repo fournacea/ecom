@@ -20,9 +20,14 @@
  <div class="container">
 	<div class="row">
 		<div class="col-12 text-center">
-			{% for category in categories %}
-				<h4><a href="{% url 'category' category %}">{{ category }}</a></h4>
-			{% endfor %}
+			{% if categories %}
+				{% for category in categories %}
+					<h4><a href="{% url 'category' category %}">{{ category }}</a></h4>
+				{% endfor %}
+			{% else %}
+				<h3>No products...</h3>
+				<p>Sorry😕</p>
+			{% endif %}
 		</div>
 	</div>
  </div>

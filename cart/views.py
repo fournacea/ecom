@@ -105,6 +105,10 @@ def cart_delete(request):
         
         # Call delete function in Cart
         success = cart.delete(product=product_id)
+        
+        # Add a success message
+        messages.success(request, 'Product successfully removed!')
+        
         response = {'product': product_id, "success": success}
         return JsonResponse(response)
         
@@ -119,6 +123,9 @@ def cart_update(request):
         product_qty = int(request.POST.get('product_qty'))
         
         cart.update(product=product_id, quantity=product_qty)
+        
+        # Add a success message
+        messages.success(request, 'Cart successfully updated!')
         
         response = JsonResponse({"qty": product_qty})
         
