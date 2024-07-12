@@ -23,6 +23,19 @@ def about(request):
     """Render about page."""
     return render(request, 'about.html', {})
 
+
+def search(request):
+    """Search functionality."""
+    if request.method == "GET":
+        searched = request.GET.get('searched')
+        print(1,searched)
+        
+        searched =  Product.objects.filter(name__icontains=searched)
+        print(2,searched)
+    #products = Product.objects.filter()
+    return render(request, 'search.html', {"searched": searched})
+
+
 def category(request, cat):
     """Refine items to a category"""
     # Replace hyphens with spaces
