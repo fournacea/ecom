@@ -8,6 +8,7 @@ from django.contrib.auth import (
 from django.contrib.auth.hashers import check_password
 from django import forms
 from django.contrib import messages
+from django.db.models import Q
 
 from .models import Product, Category
 from .forms import SignUpForm
@@ -28,12 +29,14 @@ def search(request):
     """Search functionality."""
     if request.method == "GET":
         searched = request.GET.get('searched')
-        print(1,searched)
+        if searched:
+            print(1,searched)
         
-        searched =  Product.objects.filter(name__icontains=searched)
-        print(2,searched)
-    #products = Product.objects.filter()
-    return render(request, 'search.html', {"searched": searched})
+            searched =  Product.objects.filter(Q(name__icontains=searched) | Q(description__icontains=searched))
+            print(2,searched)
+        #products = Product.objects.filter()
+        return render(request, 'search.html', {"searched": searched})
+    return render(request, 'search.html', {})
 
 
 def category(request, cat):
