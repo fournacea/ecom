@@ -24,6 +24,14 @@
 						>Logout</a
 					>
 				</li>
+				<li class="nav-item">
+					<a
+						class="nav-link"
+						aria-current="page"
+						href="{% url 'update-user' %}"
+						>Update Profile</a
+					>
+				</li>
 				{% else %}
 				<li class="nav-item">
 					<a
@@ -37,7 +45,7 @@
 					<a
 						class="nav-link"
 						aria-current="page"
-						href="{% url 'register' %}"
+						href="{% url 'register-user' %}"
 						>Register</a
 					>
 				</li>

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import (
     authenticate, 
     login, 
@@ -6,12 +6,13 @@ from django.contrib.auth import (
     get_user_model
 )
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth.models import User
 from django import forms
 from django.contrib import messages
 from django.db.models import Q
 
 from .models import Product, Category
-from .forms import SignUpForm
+from .forms import SignUpForm, UpdateUserForm
 
 
 def home(request):
@@ -129,7 +130,27 @@ def register_user(request):
     return render(request, 'register.html', {"form": form})
 
 
+def update_user(request):
+    """Handle upadting user."""
+
+    if request.user.is_authenticated:
+        current_user = User.objects.get(pk=request.user.id)
+        user_form = UpdateUserForm(request.POST or None, instance=current_user)
+        
+        if user_form.is_valid():
+            user_form.save()
+            
+            login(request, current_user)
+            messages.success(request, 'Profile successfully updated!')
+            return redirect('home')
+        return render(request, 'update-user.html', {"user_form": user_form})
+    else:
+        messages.warning(request, 'You must be logged in to do that!')  
+        return render(request, 'update-user.html', {})
+
+
 def product(request, pk):
     """Render product page."""
-    product = Product.objects.get(id=pk)
+    #product = Product.objects.get(id=pk)
+    product = get_object_or_404(Product, id=pk)
     return render(request, 'product.html', {"product": product})

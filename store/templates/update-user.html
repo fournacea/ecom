@@ -6,7 +6,7 @@
 <header class="bg-dark py-3">
   <div class="container px-4 px-lg-5 my-5">
     <div class="text-center text-white">
-      <h1 class="display-4 fw-bolder">YOU want to Register? 😟</h1>
+      <h1 class="display-4 fw-bolder">YOU want to Update your profile? 😟</h1>
     </div>
   </div>
 </header>
@@ -15,11 +15,11 @@
   <div class="row">
     <center>
       <div class="col-6 mt-2 mb-3 pt-5 pb-4">
-        <form method="POST" action="{% url "register-user" %}">
+        <form method="POST" action="{% url "update-user" %}">
             {% csrf_token %}
-            {{ form.as_p }} 
+            {{ user_form.as_p }} 
 
-          <button type="submit" class="btn btn-secondary">Login</button>
+          <button type="submit" class="btn btn-secondary">Update Profile</button>
 
         </form>
       </div>
